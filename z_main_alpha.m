@@ -1,4 +1,4 @@
-function [] = z_main_alpha( runtime )
+function [] = z_main_alpha
 %initialize serial
 delete(instrfindall);
 blu = serial('com3');
@@ -13,7 +13,6 @@ vid = videoinput('winvideo',1);
 count = 1; X = zeros(1,5); Y = zeros(1,5);
 ROI_flag = 0;
 width = 0; length = 0;
-test = 0;
 
 % Configure the object for manual trigger mode.
 triggerconfig(vid, 'manual');
@@ -121,6 +120,10 @@ while (1)
         fprintf(blu,'%d',direction);
     end
     fprintf(blu,'%d',Z);
+    
+    if strcmpi(get(gcf,'CurrentCharacter'),'e')
+        break;
+    end
 end
 stop(vid)
 delete(vid)
