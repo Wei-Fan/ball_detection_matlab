@@ -1,11 +1,12 @@
 %initialize serial
 delete(instrfindall);
-blu = serial('com3');
+blu = serial('com5');
 set(blu,'BaudRate',9600);
 fopen(blu);
 
-distance = 5;
+distance = 3;
 direction = 0;
+fprintf(blu,'%s','{0:100}');
 
 %initialize camera
 vid = videoinput('winvideo',1);  
@@ -62,11 +63,11 @@ while ~strcmpi(get(gcf,'CurrentCharacter'),'e')
     x = stats(s).Centroid(1);
     y = stats(s).Centroid(2);
     
-    if count <= 4
+    if count <= 3
         X(count) = x;
         Y(count) = y;
         count = count + 1;
-    elseif count == 5
+    elseif count == 4
         a = z_curveFit(X, -Y, 2)
         
         if a(1)<0
@@ -75,13 +76,13 @@ while ~strcmpi(get(gcf,'CurrentCharacter'),'e')
             %p = a(1) + a(2)*t + a(3)*t.^2;
             %figure(3);plot(t,p),title('track');
             %[distance,direction] = z_transfer(a(1),a(2),a(3));
-            if distance == 0
+            if direction == 0
                 fprintf(blu,'%s','A');
             else
                 fprintf(blu,'%s','E');
             end
             pause(distance)
-            fprintf(blu,'%s',Z);
+            fprintf(blu,'%s','Z');
         end
         
         count = 1;
